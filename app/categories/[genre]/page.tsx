@@ -1,17 +1,18 @@
+// app/categories/[genre]/page.tsx
 import movies from "@/app/data/movies.json";
 import ShowCard from "@/app/components/ShowCard";
-import { getGenres } from "@/app/utils/getGenres";
-
+import { Movie } from "@/app/types/movie";
 
 export async function generateStaticParams() {
-  const genres = getGenres()
-  return genres.map((g) => ({ genre: g }));
+  const genres = [...new Set((movies as Movie[]).flatMap((m) => m.genres))];
+  return genres.map((genre) => ({ genre: genre.toLowerCase() }));
 }
 
-export default function GenrePage({ params }: { params: { genre: string } }) {
-  const genre = params.genre.toLowerCase();
+export default async function GenrePage({ params }: { params: { genre: string } }) {
+  const resolvedParams = await params; // ✅ unwrap the promise
+  const genre = resolvedParams.genre.toLowerCase();
 
-  const filteredMovies = movies.filter((m) =>
+  const filteredMovies = (movies as Movie[]).filter((m) =>
     m.genres.some((g) => g.toLowerCase() === genre)
   );
 

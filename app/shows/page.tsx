@@ -12,22 +12,13 @@ export default function ShowsPage() {
   const movies: Movie[] = moviesData as Movie[];
 
   const [search, setSearch] = useState<string>("");
-  const [selectedGenre, setSelectedGenre] = useState<string>("");
   const [sort, setSort] = useState<string>("");
 
   const genres: string[] = [...new Set(movies.flatMap((m) => m.genres))];
 
-  let filtered = movies
-    .filter((m) =>
-      m.name.toLowerCase().includes(search.toLowerCase())
-    )
-    .filter((m) =>
-      selectedGenre
-        ? m.genres.some(
-            (g) => g.toLowerCase() === selectedGenre.toLowerCase()
-          )
-        : true
-    );
+  let filtered = movies.filter((m) =>
+    m.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   if (sort === "rating") {
     filtered = filtered.sort(
@@ -45,8 +36,7 @@ export default function ShowsPage() {
 
       <Filters
         genres={genres}
-        selectedGenre={selectedGenre}
-        onGenreChange={setSelectedGenre}
+        selectedGenre="" 
         sort={sort}
         onSortChange={setSort}
       />

@@ -1,44 +1,36 @@
+import TrailerButton from "@/app/components/TrailerButton";
 import movies from "@/app/data/movies.json";
-import { Metadata } from "next";
 import Image from "next/image";
+import { Metadata } from "next";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
+type Props = { params: { id: string } };
 
-// Static params
-export async function generateStaticParams() {
-  return movies.map((m) => ({ id: m.id.toString() }));
-}
-// generateMetadata
-export async function generateMetadata({ params }: Props) {
-  const Params = await params;
-  const id = Params?.id?.toString(); // safe
-
-  const show = movies.find((s) => s.id.toString() === id);
-
+// Metadata generation for SEO
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const resolvedParams = await params; // ✅ unwrap the Promise
+  const show = movies.find((s) => s.id.toString() === resolvedParams.id);
   return {
     title: show ? `${show.name} | Movies & TV Shows` : "Show Not Found",
     description: show?.overview || "Explore details of this movie or TV show.",
   };
 }
 
-
 export default async function ShowDetail({ params }: Props) {
-  const resolvedParams = await params;
-  const id = resolvedParams.id.toString();
+  const resolvedParams = await params; // ✅ unwrap the Promise
+  const show = movies.find((s) => s.id.toString() === resolvedParams.id);
 
-  const show = movies.find((s) => s.id.toString() === id);
-  if (!show) return <div>Show not found.</div>;
+  if (!show)
+    return (
+      <div className="text-center mt-20 text-xl font-semibold">
+        ❌ Show not found.
+      </div>
+    );
 
   return (
-    <main className="min-h-screen bg-linear-to-br from-gray-950 via-gray-900 to-black text-gray-100 py-16 px-6">
+    <main className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-gray-100 py-16 px-6">
       <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-12 bg-white/5 p-8 rounded-2xl backdrop-blur-xl shadow-xl border border-white/10">
-
         {/* LEFT SIDE — POSTER */}
-        <div className="shrink-0">
+        <div className="flex-shrink-0">
           <Image
             src={show.image || "/placeholder.png"}
             alt={show.name}
@@ -70,7 +62,7 @@ export default async function ShowDetail({ params }: Props) {
               </p>
               {show.genres && (
                 <p>
-                  <span className="font-semibold text-white">Genre:</span>{" "}
+                  <span className="font-semibold text-white">Genres:</span>{" "}
                   {show.genres.join(", ")}
                 </p>
               )}
@@ -78,15 +70,7 @@ export default async function ShowDetail({ params }: Props) {
           </div>
 
           {/* TRAILER BUTTON */}
-          {show.trailerUrl && (
-            <a
-              href={show.trailerUrl}
-              target="_blank"
-              className="mt-8 inline-block text-center bg-blue-600 hover:bg-blue-700 transition-colors text-white px-6 py-3 rounded-xl shadow-lg font-semibold"
-            >
-              🎬 Watch Trailer
-            </a>
-          )}
+          {show.trailerUrl && <TrailerButton trailerUrl={show.trailerUrl} />}
         </div>
       </div>
     </main>

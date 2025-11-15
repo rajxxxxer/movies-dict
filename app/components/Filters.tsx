@@ -24,7 +24,9 @@ export default function Filters({
         value={selectedGenre}
         onChange={(e) =>
           router.push(
-            e.target.value ? `/categories/${e.target.value.toLowerCase()}` : "/shows"
+            e.target.value
+              ? `/categories/${e.target.value.toLowerCase()}`
+              : "/shows",
           )
         }
         className="bg-gray-800 text-white px-4 py-2 rounded"

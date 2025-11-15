@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Movie } from "../types/movie";
 
-
 type Props = {
   movie: Movie;
 };
@@ -9,7 +8,7 @@ type Props = {
 export default function ShowCard({ movie }: Props) {
   return (
     <Link href={`/shows/${movie.id}`}>
-      <div className="bg-gray-900 p-4 rounded-xl shadow hover:scale-105 transition">
+      <div className="bg-orange-900 p-4 rounded-xl shadow hover:scale-105 transition">
         <img
           src={movie.image || "/fallback.jpg"}
           alt={movie.name}

@@ -1,5 +1,5 @@
 const nextConfig = {
-   productionBrowserSourceMaps: false,
+  productionBrowserSourceMaps: false,
   logger: {
     error: () => {},
     warn: () => {},

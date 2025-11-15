@@ -5,7 +5,7 @@ export interface Movie {
   image: string | null;
   year: string | number;
   rating: string | number | null;
-  trailerUrl: string | null;   // ← FIX
+  trailerUrl: string | null; // ← FIX
   overview: string | null;
   genres: string[];
   runtime: number | null;

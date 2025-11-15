@@ -10,9 +10,10 @@ export default function Home() {
         </h1>
 
         <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-          Explore trending movies & TV shows powered by the Watchmode API + OMDB API.
-          This directory provides detailed information including posters, ratings,
-          release years, genres, and trailers — all fetched using ISR/SSG with Next.js.
+          Explore trending movies & TV shows powered by the Watchmode API + OMDB
+          API. This directory provides detailed information including posters,
+          ratings, release years, genres, and trailers — all fetched using
+          ISR/SSG with Next.js.
         </p>
 
         <Link
@@ -43,7 +44,9 @@ export default function Home() {
             <li>✔ Genre-based filtering & search options</li>
             <li>✔ Individual detailed pages for each show</li>
             <li>✔ Trailer links from Watchmode</li>
-            <li>✔ Static Generation (SSG) + Incremental Static Regeneration (ISR)</li>
+            <li>
+              ✔ Static Generation (SSG) + Incremental Static Regeneration (ISR)
+            </li>
           </ul>
         </div>
       </section>
@@ -58,28 +61,28 @@ export default function Home() {
           {[
             {
               title: "Search & Filters",
-              desc: "Find movies & shows instantly using categories, genres, and ratings."
+              desc: "Find movies & shows instantly using categories, genres, and ratings.",
             },
             {
               title: "Detail Pages",
-              desc: "Every title has its own dedicated detail page with rich metadata."
+              desc: "Every title has its own dedicated detail page with rich metadata.",
             },
             {
               title: "SEO Optimized",
-              desc: "Metadata, dynamic OG images, and sitemap included."
+              desc: "Metadata, dynamic OG images, and sitemap included.",
             },
             {
               title: "Dark Mode Ready",
-              desc: "Beautiful design with full dark/light theme support."
+              desc: "Beautiful design with full dark/light theme support.",
             },
             {
               title: "Static Generation",
-              desc: "Pages built using SSG & regenerated efficiently using ISR."
+              desc: "Pages built using SSG & regenerated efficiently using ISR.",
             },
             {
               title: "Built with AI",
-              desc: "Dataset cleaning, design inspiration, and scaffolding assisted by AI tools."
-            }
+              desc: "Dataset cleaning, design inspiration, and scaffolding assisted by AI tools.",
+            },
           ].map((item, idx) => (
             <div
               key={idx}

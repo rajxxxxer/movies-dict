@@ -17,13 +17,11 @@ export default function ShowsPage() {
   const genres: string[] = [...new Set(movies.flatMap((m) => m.genres))];
 
   let filtered = movies.filter((m) =>
-    m.name.toLowerCase().includes(search.toLowerCase())
+    m.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   if (sort === "rating") {
-    filtered = filtered.sort(
-      (a, b) => Number(b.rating) - Number(a.rating)
-    );
+    filtered = filtered.sort((a, b) => Number(b.rating) - Number(a.rating));
   } else if (sort === "year") {
     filtered = filtered.sort((a, b) => Number(b.year) - Number(a.year));
   }
@@ -36,7 +34,7 @@ export default function ShowsPage() {
 
       <Filters
         genres={genres}
-        selectedGenre="" 
+        selectedGenre=""
         sort={sort}
         onSortChange={setSort}
       />

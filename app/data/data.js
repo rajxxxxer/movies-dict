@@ -1,9 +1,11 @@
 const fs = require("fs");
 const path = require("path");
-const fetch = require("node-fetch"); // npm i node-fetch@2
+const fetch = require("node-fetch");
+const WATCHMODE_API_KEY = process.env.NEXT_PUBLIC_WATCHMODE_API_KEY;
+const OMDB_API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY;
 
-const WATCHMODE_API_KEY = "wELWo199Jk3y3qxHHo7nqnBr6kKF1iO2ew0HHFDD";
-const OMDB_API_KEY = "790abeb5";
+
+
 
 const WATCHMODE_BASE = "https://api.watchmode.com/v1";
 const OMDB_BASE = "https://www.omdbapi.com/";
@@ -29,12 +31,18 @@ async function run() {
   let fetchedCount = 0;
   let page = 1;
 
-  while (fetchedCount < 100) { // stop after 100 movies
+  while (fetchedCount < 100) {
+    // stop after 100 movies
     let list;
     try {
-      list = await fetchJson(`${WATCHMODE_BASE}/list-titles/?apiKey=${WATCHMODE_API_KEY}&types=tv_series&limit=${limit}&page=${page}`);
+      list = await fetchJson(
+        `${WATCHMODE_BASE}/list-titles/?apiKey=${WATCHMODE_API_KEY}&types=tv_series&limit=${limit}&page=${page}`,
+      );
     } catch (err) {
-      console.error("❌ Failed to fetch list from Watchmode:", err.message || err);
+      console.error(
+        "❌ Failed to fetch list from Watchmode:",
+        err.message || err,
+      );
       break;
     }
 
@@ -46,11 +54,18 @@ async function run() {
 
     for (const show of items) {
       try {
-        console.log("➡️ Processing show:", show.title ?? show.name, "id:", show.id);
+        console.log(
+          "➡️ Processing show:",
+          show.title ?? show.name,
+          "id:",
+          show.id,
+        );
 
         if (!show.imdb_id) {
           try {
-            const det = await fetchJson(`${WATCHMODE_BASE}/title/${show.id}/details/?apiKey=${WATCHMODE_API_KEY}`);
+            const det = await fetchJson(
+              `${WATCHMODE_BASE}/title/${show.id}/details/?apiKey=${WATCHMODE_API_KEY}`,
+            );
             show.imdb_id = det.imdb_id ?? null;
           } catch {
             show.imdb_id = null;
@@ -60,7 +75,9 @@ async function run() {
         let omdb = {};
         if (show.imdb_id) {
           try {
-            omdb = await fetchJson(`${OMDB_BASE}?apikey=${OMDB_API_KEY}&i=${show.imdb_id}`);
+            omdb = await fetchJson(
+              `${OMDB_BASE}?apikey=${OMDB_API_KEY}&i=${show.imdb_id}`,
+            );
           } catch (e) {
             console.warn("⚠️ OMDB data missing for:", show.imdb_id);
             omdb = {};
@@ -69,7 +86,9 @@ async function run() {
 
         let details = {};
         try {
-          details = await fetchJson(`${WATCHMODE_BASE}/title/${show.id}/details/?apiKey=${WATCHMODE_API_KEY}`);
+          details = await fetchJson(
+            `${WATCHMODE_BASE}/title/${show.id}/details/?apiKey=${WATCHMODE_API_KEY}`,
+          );
         } catch {
           details = {};
         }
@@ -83,17 +102,24 @@ async function run() {
           rating: omdb.imdbRating ?? null,
           trailerUrl: details.trailer ?? null,
           overview: omdb.Plot ?? null,
-          genres: omdb.Genre ? omdb.Genre.split(",").map(x => x.trim()) : [],
-          runtime: omdb.Runtime && omdb.Runtime !== "N/A" ? parseInt(omdb.Runtime.split(" ")[0]) : null,
+          genres: omdb.Genre ? omdb.Genre.split(",").map((x) => x.trim()) : [],
+          runtime:
+            omdb.Runtime && omdb.Runtime !== "N/A"
+              ? parseInt(omdb.Runtime.split(" ")[0])
+              : null,
         });
 
         console.log("✅ Added:", omdb.Title ?? show.title ?? show.name);
         fetchedCount++;
         if (fetchedCount >= 100) break;
 
-        await new Promise(r => setTimeout(r, 200)); // avoid rate limits
+        await new Promise((r) => setTimeout(r, 200)); // avoid rate limits
       } catch (err) {
-        console.error("⚠️ Error processing show id:", show.id, err.message || err);
+        console.error(
+          "⚠️ Error processing show id:",
+          show.id,
+          err.message || err,
+        );
       }
     }
 
@@ -102,7 +128,10 @@ async function run() {
 
   const outDir = path.join(__dirname);
   fs.mkdirSync(outDir, { recursive: true });
-  fs.writeFileSync(path.join(outDir, "movies.json"), JSON.stringify(movies, null, 2));
+  fs.writeFileSync(
+    path.join(outDir, "movies.json"),
+    JSON.stringify(movies, null, 2),
+  );
 
   console.log("🎉 Saved:", movies.length, "movies to movies.json");
 }

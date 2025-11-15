@@ -15,6 +15,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+export function generateStaticParams() {
+  return movies.map((m) => ({
+    id: m.id.toString(),
+  }));
+}
 export default async function ShowDetail({ params }: Props) {
   const resolvedParams = await params;
   const show = movies.find((s) => s.id.toString() === resolvedParams.id);

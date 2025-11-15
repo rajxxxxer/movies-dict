@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ShowDetail({ params }: Props) {
-  const resolvedParams = await params; // ✅ unwrap the Promise
+  const resolvedParams = await params;
   const show = movies.find((s) => s.id.toString() === resolvedParams.id);
 
   if (!show)

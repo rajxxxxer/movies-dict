@@ -10,7 +10,7 @@ const getGenres = () => {
   return Array.from(genres);
 };
 
-const BASE_URL = "https://example.com";
+const BASE_URL = "https://movies-dict.vercel.app";
 
 export async function GET(req: NextRequest) {
   const urls: string[] = [];

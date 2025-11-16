@@ -16,14 +16,27 @@ export default function ShowsClient({ movies, genres }: Props) {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
 
+  // Handle: string | number | null
+  const num = (v: string | number | null) => {
+    if (v === null) return 0;
+    const n = Number(v);
+    return isNaN(n) ? 0 : n;
+  };
+
+  // SEARCH FILTER
   let filtered = movies.filter((m) =>
     m.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  // SORT HANDLING
   if (sort === "rating") {
-    filtered = filtered.sort((a, b) => Number(b.rating) - Number(a.rating));
+    filtered = [...filtered].sort(
+      (a, b) => num(b.rating) - num(a.rating)
+    );
   } else if (sort === "year") {
-    filtered = filtered.sort((a, b) => Number(b.year) - Number(a.year));
+    filtered = [...filtered].sort(
+      (a, b) => num(b.year) - num(a.year)
+    );
   }
 
   return (

@@ -1,11 +1,15 @@
 import Link from "next/link";
+import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-black">
       {/* Hero Section */}
+     
       <section className="max-w-6xl mx-auto px-6 py-24 text-center">
         <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">
+         
           Movies & TV Shows Directory
         </h1>
 
@@ -106,6 +110,7 @@ export default function Home() {
           Start Exploring →
         </Link>
       </section>
+    
     </main>
   );
 }
